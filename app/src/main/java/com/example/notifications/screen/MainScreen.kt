@@ -19,15 +19,15 @@ fun MainScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = mainViewModel::showSimpleNotification) {
             Text(text = "Simple Notification")
         }
         Spacer(modifier = Modifier.height(12.dp))
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = mainViewModel::updateSimpleNotification) {
             Text(text = "Update Notification")
         }
         Spacer(modifier = Modifier.height(12.dp))
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = mainViewModel::cancelSimpleNotification) {
             Text(text = "Cancel Notification")
         }
     }
