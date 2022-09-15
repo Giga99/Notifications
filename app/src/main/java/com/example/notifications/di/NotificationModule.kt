@@ -1,9 +1,6 @@
 package com.example.notifications.di
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.TaskStackBuilder
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
@@ -12,9 +9,10 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import com.example.notifications.MainActivity
 import com.example.notifications.R
+import com.example.notifications.common.annotations.AlarmPendingIntent
 import com.example.notifications.navigation.MY_ARG
 import com.example.notifications.navigation.MY_URI
-import com.example.notifications.receiver.MyReceiver
+import com.example.notifications.receiver.AlarmNotificationReceiver
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,16 +29,6 @@ object NotificationModule {
     fun provideNotificationBuilder(
         @ApplicationContext context: Context
     ): NotificationCompat.Builder {
-        val intent = Intent(context, MyReceiver::class.java).apply {
-            putExtra("MESSAGE", "Clicked!")
-        }
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            0,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
         val clickIntent = Intent(
             Intent.ACTION_VIEW,
             "$MY_URI/$MY_ARG=Coming from Notification".toUri(),
@@ -64,7 +52,6 @@ object NotificationModule {
                     .setContentText("Unlock to see the message.")
                     .build()
             )
-            .addAction(0, "ACTION", pendingIntent)
             .setContentIntent(clickPendingIntent)
     }
 
@@ -82,4 +69,26 @@ object NotificationModule {
         notificationManager.createNotificationChannel(channel)
         return notificationManager
     }
+
+    @Singleton
+    @Provides
+    fun provideAlarmManager(
+        @ApplicationContext context: Context
+    ): AlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+    @Singleton
+    @AlarmPendingIntent
+    @Provides
+    fun provideAlarmPendingIntent(
+        @ApplicationContext context: Context
+    ): PendingIntent =
+        PendingIntent.getBroadcast(
+            context,
+            2,
+            Intent(context, AlarmNotificationReceiver::class.java).apply {
+                putExtra(AlarmNotificationReceiver.NOTIFICATION_TITLE, "Vreme je za lek")
+                putExtra(AlarmNotificationReceiver.NOTIFICATION_TEXT, "Vreme je da popijete lek")
+            },
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
 }

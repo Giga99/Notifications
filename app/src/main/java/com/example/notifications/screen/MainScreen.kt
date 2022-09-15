@@ -8,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.notifications.MainViewModel
 import com.example.notifications.navigation.Screen
@@ -42,7 +41,7 @@ fun MainScreen(
                 )
             }
         ) {
-            Text(text = "DETAILS SCREEN")
+            Text(text = "Details Screen")
         }
     }
 }
