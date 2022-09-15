@@ -10,6 +10,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.notifications.navigation.SetupNavGraph
 import com.example.notifications.screen.MainScreen
 import com.example.notifications.ui.theme.NotificationsTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +22,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             NotificationsTheme {
-                MainScreen()
+                SetupNavGraph(navController = rememberNavController())
             }
         }
     }
